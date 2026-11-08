@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>RoboSoul Dance Studio V10 · NMSU</title>
-<link rel="stylesheet" href="./style.css?v=10.0">
+<title>RoboSoul Dance Studio V11 · NMSU</title>
+<link rel="stylesheet" href="./style.css?v=11.0">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
 </head>
@@ -21,7 +21,16 @@
  </section>
  <section class="center-column">
   <div class="stage-container"><div id="robot"></div><div class="stage-label">NMSU <span>ROBOTICS · DANCE STAGE</span></div><div class="stage-caption">Drag to rotate · Scroll to zoom</div></div>
-  <div class="playback-bar">
+  <section class="quick-dances" aria-label="Featured dance routines">
+ <div class="quick-heading"><strong>Featured Dances</strong><span>一键播放 · 三段舞蹈</span></div>
+ <div class="quick-grid">
+  <div class="quick-dance"><button type="button" class="dance-preset" data-dance="flash">⚡ 闪身步</button><label class="audio-pick">🎵 配原声<input type="file" accept="audio/*" data-audio="flash" hidden></label><span class="audio-status" id="audio-flash">未配音频</span></div>
+  <div class="quick-dance"><button type="button" class="dance-preset" data-dance="kick">⚽ 浪子踢球</button><label class="audio-pick">🎵 配原声<input type="file" accept="audio/*" data-audio="kick" hidden></label><span class="audio-status" id="audio-kick">未配音频</span></div>
+  <div class="quick-dance"><button type="button" class="dance-preset" data-dance="bear">🐻 狗熊哆嗦毛</button><label class="audio-pick">🎵 配原声<input type="file" accept="audio/*" data-audio="bear" hidden></label><span class="audio-status" id="audio-bear">未配音频</span></div>
+ </div>
+ <p class="quick-note">内置的是机器人改编动作，不是原版逐帧复刻。可上传你有权使用的 MP3/WAV/M4A 原声；上传的音频仅在当前浏览器页面中使用，刷新后需重新选择。音频与动作同时开始，若时长不同不会自动对齐节拍。</p>
+</section>
+<div class="playback-bar">
    <div class="playback-group theme-group"><label for="stageTheme">Stage Theme</label><select id="stageTheme"><option value="concert">NMSU Stage</option><option value="studio">Studio</option><option value="space">Space</option></select></div>
    <div class="playback-group"><label class="toggle-label"><input type="checkbox" id="stageLights" checked> Moving Lights</label></div>
    <div class="playback-group"><label for="playbackSpeed">Playback Speed</label><select id="playbackSpeed"><option value="0.5">0.5×</option><option value="1" selected>1×</option><option value="2">2×</option></select></div>
@@ -40,5 +49,5 @@
   <p class="footnote">3D choreography preview only. Servo calibration and RoboSoul .rob export are not implemented.</p>
  </section>
 </main>
-<script src="./script.js?v=10.0"></script>
+<script src="./script.js?v=11.0"></script>
 </body></html>

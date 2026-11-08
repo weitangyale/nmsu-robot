@@ -20,3 +20,17 @@ button,select,input{font:inherit}button{cursor:pointer;border:1px solid transpar
 .saved-header{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:15px 0 8px;border-top:1px solid #3b414a;padding-top:12px}.saved-header h3{font-size:14px;margin:0}#savedPoses .item-line{align-items:start;flex-direction:column}
 @media(max-width:1180px){.app-layout{grid-template-columns:240px minmax(360px,1fr) 280px}.brand-sub{display:none}.playback-bar{gap:8px}.playback-buttons{width:100%}.playback-buttons button{flex:1}}
 @media(max-width:850px){.app-header{height:auto;min-height:67px;flex-wrap:wrap}.app-layout{height:auto;display:grid;grid-template-columns:minmax(0,1fr);overflow:visible}.center-column{grid-row:1}.stage-container{height:58vh;min-height:390px;flex:none}.panel{overflow:visible}.joints-panel{grid-row:3}.sequence-panel{grid-row:2}.timeline{max-height:380px}.brand strong{font-size:16px}}
+
+.quick-dances{padding:11px 14px 9px;background:#1c2028;border-top:1px solid #564452;border-bottom:1px solid #49323e}
+.quick-heading{display:flex;gap:12px;align-items:center;margin-bottom:9px;font-size:13px}
+.quick-heading span{font-size:11px;color:#bfc2cc}
+.quick-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
+.quick-dance{display:flex;flex-direction:column;align-items:stretch;gap:5px;padding:8px;border-radius:8px;background:#272832;border:1px solid #50404b;min-width:0}
+.dance-preset{background:#851737;border:1px solid #b54365;font-size:13px;font-weight:700;white-space:nowrap}
+.audio-pick{cursor:pointer;display:block;text-align:center;font-size:11px;border:1px solid #55515c;border-radius:5px;padding:5px 4px;color:#eee;background:#37343d}
+.audio-pick:hover{background:#4a3a49}
+.audio-status{font-size:10px;color:#b8bbc4;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:center}
+.quick-note{font-size:10px;line-height:1.4;color:#aeb2bd;margin:8px 0 0}
+@media(max-width:1100px){.quick-grid{grid-template-columns:1fr}.quick-dance{display:grid;grid-template-columns:1fr 1fr;align-items:center}.audio-status{grid-column:1/-1}}
+@media(max-width:850px){.quick-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.quick-dance{display:flex}}
+@media(max-width:550px){.quick-grid{grid-template-columns:1fr}}

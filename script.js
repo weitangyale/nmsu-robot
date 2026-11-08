@@ -159,17 +159,58 @@ async function playDance(){
    cycle++;
    if(playing&&token===playToken&&loopInput.checked) announce('Loop ON · completed '+cycle+' cycle(s), restarting…');
   } while(playing&&token===playToken&&loopInput.checked&&frames.length);
-  if(playing&&token===playToken)announce('Dance complete! (Loop '+(loopInput.checked?'ON':'OFF')+', '+(Number(speedInput.value)||1)+'×)');
+  if(playing&&token===playToken){stopAudio();activePreset=null;}
+   if(playing&&token===playToken)announce('Dance complete! (Loop '+(loopInput.checked?'ON':'OFF')+', '+(Number(speedInput.value)||1)+'×)');
  } finally {
   if(token===playToken){playing=false;playButton.disabled=false}
  }
 }
-document.getElementById('playDance').addEventListener('click',playDance);
-document.getElementById('stopDance').addEventListener('click',()=>{stopPlayback();announce('Playback stopped.')});
+document.getElementById('playDance').addEventListener('click',()=>{stopAudio();activePreset=null;playDance()});
+document.getElementById('stopDance').addEventListener('click',()=>{stopPlayback();stopAudio();activePreset=null;announce('Playback stopped.')});
 document.getElementById('downloadDance').addEventListener('click',()=>{const data={format:'RoboSoulDanceStudio',version:1,joints:joints.map(j=>({name:j.name,min:j.min,max:j.max})),poses:savedPoses,frames};const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='nmsu-dance.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);announce('Dance JSON downloaded.')});
 document.getElementById('loadDance').addEventListener('change',async e=>{const file=e.target.files[0];if(!file)return;try{const data=JSON.parse(await file.text());if(data.format!=='RoboSoulDanceStudio'||data.version!==1||!Array.isArray(data.frames)||data.frames.length>2000||!data.frames.every(f=>validPose(f.angles)&&Number.isFinite(f.duration)&&f.duration>=100&&f.duration<=10000)||!Array.isArray(data.poses)||data.poses.length>2000||!data.poses.every(p=>typeof p.name==='string'&&validPose(p.angles))||!Array.isArray(data.joints)||data.joints.length!==joints.length||!data.joints.every((j,i)=>j.name===joints[i].name))throw Error('Incompatible or invalid dance JSON');stopPlayback();frames=data.frames.map(f=>({angles:f.angles.slice(),duration:f.duration}));savedPoses=data.poses.map(p=>({name:p.name.slice(0,80),angles:p.angles.slice()}));selected=-1;renderFrames();renderPoses();announce('Dance loaded: '+frames.length+' frames.')}catch(err){announce('Could not load: '+err.message)}e.target.value=''});
 renderPoses();renderFrames();
 
+
+
+// Featured dances are bundled into script.js: no separate JSON files needed.
+const presetDances={"flash":{"frames":[{"angles":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"duration":450},{"angles":[-38,-55,-35,15,12,-35,14,-20,20,-8,0,-9,4,12,-8,0],"duration":240},{"angles":[-18,-25,-30,-18,25,-30,0,0,8,0,0,0,0,8,0,0],"duration":190},{"angles":[15,-12,-35,-38,55,-35,-9,-4,12,-8,0,14,20,20,-8,0],"duration":240},{"angles":[-18,-25,-30,-18,25,-30,0,0,8,0,0,0,0,8,0,0],"duration":190},{"angles":[-38,-55,-35,15,12,-35,14,-20,20,-8,0,-9,4,12,-8,0],"duration":240},{"angles":[-18,-25,-30,-18,25,-30,0,0,8,0,0,0,0,8,0,0],"duration":190},{"angles":[15,-12,-35,-38,55,-35,-9,-4,12,-8,0,14,20,20,-8,0],"duration":240},{"angles":[-18,-25,-30,-18,25,-30,0,0,8,0,0,0,0,8,0,0],"duration":190},{"angles":[-38,-55,-35,15,12,-35,14,-20,20,-8,0,-9,4,12,-8,0],"duration":240},{"angles":[-18,-25,-30,-18,25,-30,0,0,8,0,0,0,0,8,0,0],"duration":190},{"angles":[15,-12,-35,-38,55,-35,-9,-4,12,-8,0,14,20,20,-8,0],"duration":240},{"angles":[-18,-25,-30,-18,25,-30,0,0,8,0,0,0,0,8,0,0],"duration":190},{"angles":[-38,-55,-35,15,12,-35,14,-20,20,-8,0,-9,4,12,-8,0],"duration":240},{"angles":[-18,-25,-30,-18,25,-30,0,0,8,0,0,0,0,8,0,0],"duration":190},{"angles":[15,-12,-35,-38,55,-35,-9,-4,12,-8,0,14,20,20,-8,0],"duration":240},{"angles":[-18,-25,-30,-18,25,-30,0,0,8,0,0,0,0,8,0,0],"duration":190},{"angles":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"duration":450}],"joints":["Left shoulder forward","Left shoulder sideways","Left elbow","Right shoulder forward","Right shoulder sideways","Right elbow","Left hip forward","Left hip sideways","Left knee","Left ankle forward","Left ankle sideways","Right hip forward","Right hip sideways","Right knee","Right ankle forward","Right ankle sideways"]},"kick":{"frames":[{"angles":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"duration":450},{"angles":[12,-45,-55,-45,45,-55,47,0,72,-12,0,-10,0,12,0,0],"duration":360},{"angles":[12,-45,-55,-45,45,-55,38,0,14,10,0,-10,0,12,0,0],"duration":270},{"angles":[-20,0,0,-20,0,0,0,0,10,0,0,0,0,10,0,0],"duration":280},{"angles":[-45,-45,-55,12,45,-55,-10,0,12,0,0,47,0,72,-12,0],"duration":360},{"angles":[-45,-45,-55,12,45,-55,-10,0,12,0,0,38,0,14,10,0],"duration":270},{"angles":[-20,0,0,-20,0,0,0,0,10,0,0,0,0,10,0,0],"duration":280},{"angles":[12,-45,-55,-45,45,-55,47,0,72,-12,0,-10,0,12,0,0],"duration":360},{"angles":[12,-45,-55,-45,45,-55,38,0,14,10,0,-10,0,12,0,0],"duration":270},{"angles":[-20,0,0,-20,0,0,0,0,10,0,0,0,0,10,0,0],"duration":280},{"angles":[-45,-45,-55,12,45,-55,-10,0,12,0,0,47,0,72,-12,0],"duration":360},{"angles":[-45,-45,-55,12,45,-55,-10,0,12,0,0,38,0,14,10,0],"duration":270},{"angles":[-20,0,0,-20,0,0,0,0,10,0,0,0,0,10,0,0],"duration":280},{"angles":[12,-45,-55,-45,45,-55,47,0,72,-12,0,-10,0,12,0,0],"duration":360},{"angles":[12,-45,-55,-45,45,-55,38,0,14,10,0,-10,0,12,0,0],"duration":270},{"angles":[-20,0,0,-20,0,0,0,0,10,0,0,0,0,10,0,0],"duration":280},{"angles":[-45,-45,-55,12,45,-55,-10,0,12,0,0,47,0,72,-12,0],"duration":360},{"angles":[-45,-45,-55,12,45,-55,-10,0,12,0,0,38,0,14,10,0],"duration":270},{"angles":[-20,0,0,-20,0,0,0,0,10,0,0,0,0,10,0,0],"duration":280},{"angles":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"duration":500}],"joints":["Left shoulder forward","Left shoulder sideways","Left elbow","Right shoulder forward","Right shoulder sideways","Right elbow","Left hip forward","Left hip sideways","Left knee","Left ankle forward","Left ankle sideways","Right hip forward","Right hip sideways","Right knee","Right ankle forward","Right ankle sideways"]},"bear":{"frames":[{"angles":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"duration":420},{"angles":[-28,-99,-65,-48,125,-91,8,-11,28,-8,0,8,4,18,-8,0],"duration":185},{"angles":[-48,-125,-91,-28,99,-65,8,-4,18,-8,0,8,11,28,-8,0],"duration":185},{"angles":[-45,-105,-72,-45,105,-72,0,0,20,0,0,0,0,20,0,0],"duration":170},{"angles":[-28,-99,-65,-48,125,-91,8,-11,28,-8,0,8,4,18,-8,0],"duration":185},{"angles":[-48,-125,-91,-28,99,-65,8,-4,18,-8,0,8,11,28,-8,0],"duration":185},{"angles":[-45,-105,-72,-45,105,-72,0,0,20,0,0,0,0,20,0,0],"duration":170},{"angles":[-28,-99,-65,-48,125,-91,8,-11,28,-8,0,8,4,18,-8,0],"duration":185},{"angles":[-48,-125,-91,-28,99,-65,8,-4,18,-8,0,8,11,28,-8,0],"duration":185},{"angles":[-45,-105,-72,-45,105,-72,0,0,20,0,0,0,0,20,0,0],"duration":170},{"angles":[-28,-99,-65,-48,125,-91,8,-11,28,-8,0,8,4,18,-8,0],"duration":185},{"angles":[-48,-125,-91,-28,99,-65,8,-4,18,-8,0,8,11,28,-8,0],"duration":185},{"angles":[-45,-105,-72,-45,105,-72,0,0,20,0,0,0,0,20,0,0],"duration":170},{"angles":[-28,-99,-65,-48,125,-91,8,-11,28,-8,0,8,4,18,-8,0],"duration":185},{"angles":[-48,-125,-91,-28,99,-65,8,-4,18,-8,0,8,11,28,-8,0],"duration":185},{"angles":[-45,-105,-72,-45,105,-72,0,0,20,0,0,0,0,20,0,0],"duration":170},{"angles":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"duration":450}],"joints":["Left shoulder forward","Left shoulder sideways","Left elbow","Right shoulder forward","Right shoulder sideways","Right elbow","Left hip forward","Left hip sideways","Left knee","Left ankle forward","Left ankle sideways","Right hip forward","Right hip sideways","Right knee","Right ankle forward","Right ankle sideways"]}};
+const presetAudio={flash:null,kick:null,bear:null};
+const presetAudioURLs={flash:null,kick:null,bear:null};
+const danceAudio=new Audio();danceAudio.preload='auto';
+let activePreset=null;
+function stopAudio(){danceAudio.pause();try{danceAudio.currentTime=0}catch(_){}}
+function startPresetAudio(key){
+ stopAudio();const url=presetAudioURLs[key];if(!url)return;
+ danceAudio.src=url;danceAudio.loop=document.getElementById('loopDance').checked;
+ danceAudio.playbackRate=Number(document.getElementById('playbackSpeed').value)||1;
+ danceAudio.play().catch(()=>announce('动作已播放，但浏览器未能播放音频。请检查音频格式。'));
+}
+for(const el of document.querySelectorAll('[data-audio]')){
+ el.addEventListener('change',e=>{
+  const key=el.dataset.audio,file=e.target.files&&e.target.files[0];if(!file)return;
+  if(!file.type.startsWith('audio/')&&!/\.(mp3|wav|m4a|ogg|aac)$/i.test(file.name)){announce('请选择音频文件。');return}
+  if(presetAudioURLs[key])URL.revokeObjectURL(presetAudioURLs[key]);
+  presetAudioURLs[key]=URL.createObjectURL(file);
+  document.getElementById('audio-'+key).textContent=file.name;
+  announce('原声已配对：'+file.name+'（仅本次打开页面有效）');
+ });
+}
+for(const el of document.querySelectorAll('[data-dance]')){
+ el.addEventListener('click',()=>{
+  const key=el.dataset.dance,dance=presetDances[key];
+  if(!dance||dance.joints.length!==joints.length||!dance.joints.every((n,i)=>n===joints[i].name)||!dance.frames.every(f=>validPose(f.angles))){announce('内置舞蹈与关节配置不匹配。');return}
+  stopPlayback();stopAudio();activePreset=key;
+  frames=dance.frames.map(f=>({angles:f.angles.slice(),duration:f.duration}));
+  selected=-1;renderFrames();
+  setPose(Array(joints.length).fill(0));
+  document.getElementById('loopDance').checked=false;
+  startPresetAudio(key);playDance();
+ });
+}
+danceAudio.addEventListener('error',()=>{if(activePreset)announce('舞蹈正在播放，但音频无法解码。请尝试 MP3 或 WAV。')});
+document.getElementById('playbackSpeed').addEventListener('change',e=>{danceAudio.playbackRate=Number(e.target.value)||1});
+document.getElementById('loopDance').addEventListener('change',e=>{danceAudio.loop=e.target.checked});
 
 // ===== V10 stage: NMSU maroon / warm-white / amber, no pink =====
 const stage=new THREE.Group();scene.add(stage);
