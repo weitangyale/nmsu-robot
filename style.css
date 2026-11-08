@@ -27,10 +27,7 @@ button,select,input{font:inherit}button{cursor:pointer;border:1px solid transpar
 .quick-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
 .quick-dance{display:flex;flex-direction:column;align-items:stretch;gap:5px;padding:8px;border-radius:8px;background:#272832;border:1px solid #50404b;min-width:0}
 .dance-preset{background:#851737;border:1px solid #b54365;font-size:13px;font-weight:700;white-space:nowrap}
-.audio-pick{cursor:pointer;display:block;text-align:center;font-size:11px;border:1px solid #55515c;border-radius:5px;padding:5px 4px;color:#eee;background:#37343d}
-.audio-pick:hover{background:#4a3a49}
-.audio-status{font-size:10px;color:#b8bbc4;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:center}
 .quick-note{font-size:10px;line-height:1.4;color:#aeb2bd;margin:8px 0 0}
-@media(max-width:1100px){.quick-grid{grid-template-columns:1fr}.quick-dance{display:grid;grid-template-columns:1fr 1fr;align-items:center}.audio-status{grid-column:1/-1}}
+@media(max-width:1100px){.quick-grid{grid-template-columns:1fr}.quick-dance{display:grid;grid-template-columns:1fr 1fr;align-items:center}}
 @media(max-width:850px){.quick-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.quick-dance{display:flex}}
 @media(max-width:550px){.quick-grid{grid-template-columns:1fr}}
